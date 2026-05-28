@@ -34,7 +34,7 @@ public class DialogueEngine : MonoBehaviour
     private void OnDisable()
     {
         //Disable the Dialogue actionmap when you're not in Dialogue
-        InputActions.FindActionMap("Dialogue").Enable();        
+        InputActions.FindActionMap("Dialogue").Disable();        
     }
 
     private void Awake()
