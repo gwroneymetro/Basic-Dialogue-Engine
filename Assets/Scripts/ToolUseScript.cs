@@ -24,6 +24,7 @@ public class ToolUseScript : MonoBehaviour
     //Adjust the size of the InteractionBubble collider to adjust 
     // how far away you can interact with stuff
 
+    [SerializeField] private TextAsset npcStory; //The story that plays when you interact with the npc
 
     //int for switch to track which tool player selected
     public static int whichActiveTool;
@@ -189,7 +190,7 @@ public class ToolUseScript : MonoBehaviour
     {
         if(other.tag == "Interactable")
         {
-        objInInteractionCollider = other.gameObject;             
+        objInInteractionCollider = other.gameObject; 
         }
     }
     
@@ -235,6 +236,27 @@ public class ToolUseScript : MonoBehaviour
             objInInteractionCollider.gameObject.SetActive(false); //disable the game object the collider is attached to
             sprayBasic = true;               
             objInInteractionCollider = null;       
+            }
+
+
+            if (objInInteractionCollider == null)
+            {
+                return;
+            }
+
+
+            // If already in dialogue, advance it
+            if (DialogueManager.Instance.DialogueActive)
+            {
+                DialogueManager.Instance.ContinueStory();
+                return;
+            }
+
+            DialogueTrigger dialogue = objInInteractionCollider.GetComponent<DialogueTrigger>();
+            if (dialogue != null)
+            {
+                dialogue.TriggerDialogue();
+                return;
             }
         }
     }
