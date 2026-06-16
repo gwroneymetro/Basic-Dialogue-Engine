@@ -13,10 +13,11 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private TMP_Text dialogueText;
 
-    // [SerializeField] private Transform choicesPanel;
+    [SerializeField] private Transform choicesPanel;
 
-    // [SerializeField] private GameObject choiceButtonPrefab;
+    [SerializeField] private GameObject choiceButtonPrefab;
 
+    [SerializeField] private GameObject dialogueCanvas;
     
     
     public bool DialogueActive
@@ -27,37 +28,57 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        dialogueCanvas.SetActive(false);
+
     }
 
     public void StartStory(TextAsset inkJSON)
     {
+        dialogueCanvas.SetActive(true);
         currentStory = new Story(inkJSON.text);
 
         ContinueStory();
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 
     public void ContinueStory()
     {
+        ClearChoices();
+
+        if (currentStory == null)
+            return;
+
         if (currentStory.canContinue)
         {
             string text = currentStory.Continue();
-
             dialogueText.text = text;
+            Debug.Log(text);
         }
-        if (currentStory.currentChoices.Count > 0)
+
+        else if (currentStory.currentChoices.Count > 0)
         {
+            dialogueText.text = "";
+
             DisplayChoices();
         }
-        else if (!currentStory.canContinue)
+        else
         {
-            ClearChoices();
-
-            dialogueText.text = "";
-            
-            Debug.Log("Story Ended");
-            currentStory = null;
+            EndDialogue();
         }
     }
+
+    private void EndDialogue()
+    {
+        dialogueText.text = "";
+        Debug.Log("Story Ended");
+        currentStory = null;
+        dialogueCanvas.SetActive(false);    
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     public void ChooseChoice(int index)
     {
 
@@ -81,6 +102,8 @@ public class DialogueManager : MonoBehaviour
 
             GameObject buttonObj =
                 Instantiate(choiceButtonPrefab, choicesPanel);
+            
+            Debug.Log("Created button for choice: " + choice.text + "and button is: " + buttonObj);
 
             TMP_Text buttonText =
                 buttonObj.GetComponentInChildren<TMP_Text>();
@@ -96,6 +119,8 @@ public class DialogueManager : MonoBehaviour
                 ChooseChoice(choiceIndex);
             });
         }
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(choicesPanel as RectTransform);
     }
 
     private void ClearChoices()

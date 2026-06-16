@@ -239,25 +239,19 @@ public class ToolUseScript : MonoBehaviour
             }
 
 
-            if (objInInteractionCollider == null)
-            {
+            if (!interactInput.WasPressedThisFrame())
                 return;
-            }
 
-
-            // If already in dialogue, advance it
             if (DialogueManager.Instance.DialogueActive)
             {
                 DialogueManager.Instance.ContinueStory();
                 return;
             }
 
-            DialogueTrigger dialogue = objInInteractionCollider.GetComponent<DialogueTrigger>();
-            if (dialogue != null)
-            {
-                dialogue.TriggerDialogue();
+            if (objInInteractionCollider == null)
                 return;
-            }
+
+            objInInteractionCollider.GetComponent<DialogueTrigger>()?.TriggerDialogue();
         }
     }
 
