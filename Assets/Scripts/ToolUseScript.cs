@@ -24,6 +24,7 @@ public class ToolUseScript : MonoBehaviour
     //Adjust the size of the InteractionBubble collider to adjust 
     // how far away you can interact with stuff
 
+    [SerializeField] private TextAsset npcStory; //The story that plays when you interact with the npc
 
     //int for switch to track which tool player selected
     public static int whichActiveTool;
@@ -47,7 +48,7 @@ public class ToolUseScript : MonoBehaviour
 
     //input actions, doubleclick InputSystem_Actions to see these
     //or create or edit these
-    private InputAction interactInput; ///F key to interact/pick stuff up
+    private InputAction interactInput; ///E key to interact/pick stuff up
 
     private InputAction switchToNoToolInput;  //1 key to stow tools
     private InputAction switchToLanternInput;  //2 key to switch to the lantern
@@ -189,7 +190,7 @@ public class ToolUseScript : MonoBehaviour
     {
         if(other.tag == "Interactable")
         {
-        objInInteractionCollider = other.gameObject;             
+        objInInteractionCollider = other.gameObject; 
         }
     }
     
@@ -236,6 +237,21 @@ public class ToolUseScript : MonoBehaviour
             sprayBasic = true;               
             objInInteractionCollider = null;       
             }
+
+
+            // if (!interactInput.WasPressedThisFrame())
+            //     return;
+
+            // if (DialogueManager.Instance.DialogueActive)
+            // {
+            //     DialogueManager.Instance.ContinueStory();
+            //     return;
+            // }
+
+            // if (objInInteractionCollider == null)
+            //     return;
+
+            objInInteractionCollider.GetComponent<DialogueTrigger>()?.TriggerDialogue();
         }
     }
 

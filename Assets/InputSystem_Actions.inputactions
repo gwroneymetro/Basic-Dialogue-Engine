@@ -982,27 +982,9 @@
             "id": "cd9f203a-9351-48ae-a6ed-8008cde18c79",
             "actions": [
                 {
-                    "name": "DialogueToggle",
+                    "name": "DialogueAdvance",
                     "type": "Button",
-                    "id": "102ba3fe-c4b3-4d27-ba50-731de4983932",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "DialogueOption1",
-                    "type": "Button",
-                    "id": "bd704bcb-d447-4966-9792-a7c7c833280d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "DialogueOption2",
-                    "type": "Button",
-                    "id": "1a642d84-5d63-43aa-ab2a-665c6c523f13",
+                    "id": "f83bc78f-7fd8-41b1-ab69-b377572526df",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1012,34 +994,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "1eeee79d-356e-4753-afc8-d8ae730401a1",
-                    "path": "<Keyboard>/space",
+                    "id": "efeb28d5-364c-4cdf-8dee-6cb43e7011dd",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "DialogueToggle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "de75d46a-decc-4e85-bfab-6d5c0f274f9e",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DialogueOption2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "35da6727-fc58-4677-8ffb-916396c80d42",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DialogueOption1",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DialogueAdvance",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
