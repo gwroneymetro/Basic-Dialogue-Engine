@@ -11,6 +11,8 @@ public class DialogueManager : MonoBehaviour
 
     private Story currentStory;
 
+    private InputAction dialogueAdvanceInput; //E key to advance dialogue
+
     [SerializeField] private TMP_Text dialogueText;
 
     [SerializeField] private Transform choicesPanel;
@@ -19,6 +21,8 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private GameObject dialogueCanvas;
     
+    [SerializeField] private InputActionAsset InputActions; //put InputSystem_Actions in here
+
     
     public bool DialogueActive
     {
@@ -32,8 +36,25 @@ public class DialogueManager : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        InputActions.FindActionMap("Dialogue").Enable();
+        dialogueAdvanceInput = InputSystem.actions.FindAction("DialogueAdvance");
+    }
+ 
+    private void Update()
+    {
+        DialogueInteractInputChecker();
+    }
     public void StartStory(TextAsset inkJSON)
     {
+
+        //set time scale to 0 to pause the game
+        //https://docs.unity3d.com/6000.4/Documentation/ScriptReference/Time-timeScale.html
+
+        Time.timeScale = 0f; 
+        InputActions.FindActionMap("Player").Disable(); 
+        InputActions.FindActionMap("Dialogue").Enable(); 
         dialogueCanvas.SetActive(true);
         currentStory = new Story(inkJSON.text);
 
@@ -71,6 +92,10 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+
+        Time.timeScale = 1f; 
+        InputActions.FindActionMap("Dialogue").Disable(); 
+        InputActions.FindActionMap("Player").Enable(); 
         dialogueText.text = "";
         Debug.Log("Story Ended");
         currentStory = null;
@@ -128,6 +153,17 @@ public class DialogueManager : MonoBehaviour
         foreach (Transform child in choicesPanel)
         {
             Destroy(child.gameObject);
+        }
+    }
+
+
+    private void DialogueInteractInputChecker(){
+        if(dialogueAdvanceInput.WasPressedThisFrame()){
+            if (DialogueManager.Instance.DialogueActive)
+            {
+                DialogueManager.Instance.ContinueStory();
+                return;
+            }
         }
     }
 }

@@ -7,5 +7,7 @@ public class DialogueTrigger : MonoBehaviour
     public void TriggerDialogue()
     {
         DialogueManager.Instance.StartStory(inkJSON);
+
+        
     }
 }

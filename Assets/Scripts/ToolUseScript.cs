@@ -48,7 +48,7 @@ public class ToolUseScript : MonoBehaviour
 
     //input actions, doubleclick InputSystem_Actions to see these
     //or create or edit these
-    private InputAction interactInput; ///F key to interact/pick stuff up
+    private InputAction interactInput; ///E key to interact/pick stuff up
 
     private InputAction switchToNoToolInput;  //1 key to stow tools
     private InputAction switchToLanternInput;  //2 key to switch to the lantern
@@ -239,17 +239,17 @@ public class ToolUseScript : MonoBehaviour
             }
 
 
-            if (!interactInput.WasPressedThisFrame())
-                return;
+            // if (!interactInput.WasPressedThisFrame())
+            //     return;
 
-            if (DialogueManager.Instance.DialogueActive)
-            {
-                DialogueManager.Instance.ContinueStory();
-                return;
-            }
+            // if (DialogueManager.Instance.DialogueActive)
+            // {
+            //     DialogueManager.Instance.ContinueStory();
+            //     return;
+            // }
 
-            if (objInInteractionCollider == null)
-                return;
+            // if (objInInteractionCollider == null)
+            //     return;
 
             objInInteractionCollider.GetComponent<DialogueTrigger>()?.TriggerDialogue();
         }
