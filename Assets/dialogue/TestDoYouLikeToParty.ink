@@ -1,38 +1,111 @@
-->Party
+EXTERNAL increaseSIL(choice)
+EXTERNAL getSIL(choice)
+
+
+->Shadow
+
+==Shadow==
+Which shadow tool do you want to develop?
+    + [Bucket]
+        ~increaseSIL("Bucket")
+        ->Bucket
+    + [Spray Can]
+        ~increaseSIL("Spray")
+        ->Spray
+    + [Lantern]
+        ~increaseSIL("Lantern")
+        ->Lantern
+    + [GET ME OUTTA HERE!!]
+        
+        ->END
+
+
+== Bucket ==
+Bucket level: {getSIL("Bucket")}
+-> Shadow
+
+
+== Spray ==
+Spray level: {getSIL("Spray")}
+-> Shadow
+
+== Lantern ==
+Lantern level: {getSIL("Lantern")}
+-> Shadow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ==Party==
 Do you like to party?
 
- * [Heck yeah I do.] 
- ->Heck_Yeah
+ * [Yeah]
+    ->Heck_Yeah
  * [Not so much]
- ->Not_so_much
+    ->Not_so_much
 
 - They lived happily ever after.
     -> END
 
 == Heck_Yeah==
 Excellent!......I'm thinking we should party together?
-*[Absolutely]
-->PartyTogether
-*[Nah way]
-->Later
+    *[Absolutely]
+        ->PartyTogether
+    *[Nah way]
+        ->Later
+
 ==Later==
 Oh okay thats cool I guess, later then.
-->END
+    ->END
 
 ==PartyTogether==
 Excellent, Let's Party!
-->END
+    ->END
 
 == Not_so_much ==
 I'd be a lot cooler if you did......
 What do you like?
     * [Books.]
-    ->Books
+        ->Books
     * [Chucking Bottles]
-    ->NotCool
+        ->NotCool
     * [Making video games!]
-    ->JoinMyCLub
+        ->JoinMyCLub
     
 ==Books==
 Damn thats like really intelligent...
@@ -41,9 +114,9 @@ Damn thats like really intelligent...
 ==NotCool==
 Yo Punk you better not be leaving a mess of broken glass everywhere...
 **[Or What?]
-->YourFace
+    ->YourFace
 **[Sorry my bad]
-->ThatsWhatIThought
+    ->ThatsWhatIThought
 
 ==YourFace==
 Or I'll break your face. So check yourself.
@@ -55,14 +128,14 @@ That's what I thought, clean up your messes or I'll make you clean them.
 
 ==JoinMyCLub==
 That's rad! You should totally join our game development club!! 
-->WannaHangOut
+    ->WannaHangOut
 
 ==WannaHangOut==
 You seem cool, do you wanna hang out?
-*[Heck yeah!]
-->LetsGo
-*[Sorry no.]
-->OkayBye
+    *[Heck yeah!]
+        ->LetsGo
+    *[Sorry no.]
+        ->OkayBye
 
 ==LetsGo==
 LET'S GOOOO!!!!!!!
@@ -70,4 +143,4 @@ LET'S GOOOO!!!!!!!
 
 ==OkayBye==
 Okay Bye Felicia.
-->END
+->END 

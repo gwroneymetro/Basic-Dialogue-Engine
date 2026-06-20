@@ -13,6 +13,8 @@ public class DialogueManager : MonoBehaviour
 
     private InputAction dialogueAdvanceInput; //E key to advance dialogue
 
+    private InkExternalFunctions inkExternalFunctions; //functions to be called in the ink editor
+
     [SerializeField] private TMP_Text dialogueText;
 
     [SerializeField] private Transform choicesPanel;
@@ -33,6 +35,8 @@ public class DialogueManager : MonoBehaviour
     {
         Instance = this;
         dialogueCanvas.SetActive(false);
+        inkExternalFunctions = new InkExternalFunctions();
+        Debug.Log("inkExternalFunctions instance created: " + inkExternalFunctions);
 
     }
 
@@ -57,6 +61,9 @@ public class DialogueManager : MonoBehaviour
         InputActions.FindActionMap("Dialogue").Enable(); 
         dialogueCanvas.SetActive(true);
         currentStory = new Story(inkJSON.text);
+        inkExternalFunctions.bindIncreaseSIL(currentStory, "increaseSIL");
+        inkExternalFunctions.bindGetSIL(currentStory);
+        
 
         ContinueStory();
 
@@ -66,18 +73,26 @@ public class DialogueManager : MonoBehaviour
 
     public void ContinueStory()
     {
+        if (currentStory == null){return;}
+
         ClearChoices();
-
-        if (currentStory == null)
-            return;
-
+        
         if (currentStory.canContinue)
         {
             string text = currentStory.Continue();
-            dialogueText.text = text;
-            Debug.Log(text);
+            if (text.Equals("") && !currentStory.canContinue)  //making sure there are no white space at the end of dialogue
+            {
+                EndDialogue();
+                return;
+            } 
+            else
+            {
+                dialogueText.text = text;
+                Debug.Log(text);
+            }
+            
         }
-
+        
         else if (currentStory.currentChoices.Count > 0)
         {
             dialogueText.text = "";
@@ -98,10 +113,13 @@ public class DialogueManager : MonoBehaviour
         InputActions.FindActionMap("Player").Enable(); 
         dialogueText.text = "";
         Debug.Log("Story Ended");
+        inkExternalFunctions.unbindIncreaseSIL(currentStory);
+        inkExternalFunctions.unbindGetSIL(currentStory);
         currentStory = null;
         dialogueCanvas.SetActive(false);    
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
     }
 
     public void ChooseChoice(int index)
@@ -124,12 +142,11 @@ public class DialogueManager : MonoBehaviour
         for (int i = 0; i < currentStory.currentChoices.Count; i++)
         {
             Choice choice = currentStory.currentChoices[i];
+            Debug.Log("Displaying choice: " + choice.text);
 
             GameObject buttonObj =
                 Instantiate(choiceButtonPrefab, choicesPanel);
             
-            Debug.Log("Created button for choice: " + choice.text + "and button is: " + buttonObj);
-
             TMP_Text buttonText =
                 buttonObj.GetComponentInChildren<TMP_Text>();
 
@@ -144,8 +161,8 @@ public class DialogueManager : MonoBehaviour
                 ChooseChoice(choiceIndex);
             });
         }
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(choicesPanel as RectTransform);
+        // Canvas.ForceUpdateCanvases();
+        // LayoutRebuilder.ForceRebuildLayoutImmediate(choicesPanel as RectTransform);
     }
 
     private void ClearChoices()
